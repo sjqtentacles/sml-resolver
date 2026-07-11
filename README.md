@@ -22,6 +22,25 @@ val asn = Resolver.resolve specs
 val opt = Resolver.resolveSafe specs   (* NONE on conflict *)
 ```
 
+## Example
+
+`make example` builds and runs [`examples/demo.sml`](examples/demo.sml), which
+resolves a diamond-shaped dependency graph to the highest mutually compatible
+version and shows an unsatisfiable graph returning `NONE` (output is
+byte-identical under MLton and Poly/ML):
+
+```
+SAT-backed dependency resolver (sml-resolver)
+
+Diamond graph: app -> {left, right} -> util (overlapping ranges)
+  resolve      = util@1.2.0, right@1.0.0, left@1.0.0, app@1.0.0
+
+Conflicting graph: app needs util ^2.0.0, legacy needs util ^1.0.0
+  resolveSafe  = NONE (unsatisfiable)
+
+  parseVersion "1.2.3" round-trips to "1.2.3"
+```
+
 ## Building
 
 ```sh
